@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.ruff_cache/
+*:Zone.Identifier
+.DS_Store

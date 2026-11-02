@@ -160,7 +160,7 @@ class Deck:
             top += Inches(0.4)
         self._text(slide, (self.x, top, self.width, Inches(1.0)), title, "slide-title", "text")
         footer = (self.bottom - Inches(0.2), self.width // 2, Inches(0.2))
-        self._text(slide, (self.x, *footer), self.section, "caption", "muted")
+        self._text(slide, (self.x, *footer), self.section or label, "caption", "muted")
         number = str(len(self.prs.slides))
         self._text(
             slide,

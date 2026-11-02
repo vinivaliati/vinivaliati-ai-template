@@ -32,6 +32,6 @@ echo "Installed ${target_file}"
 cat <<'EOF'
 
 Next step, inside Claude Code:
-  /plugin marketplace add <github-user>/<repo>
+  /plugin marketplace add vinivaliati/vinivaliati-ai-template
   /plugin install vini-ai-kit@vinivaliati
 EOF

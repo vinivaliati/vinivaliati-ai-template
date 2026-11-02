@@ -1,6 +1,5 @@
 ---
 name: vinicius-valiati-brand
-version: "1.0.0"
 description: >
   Personal brand for Vinicius Valiati's presentations and visual material.
   One identity (palette, type, wordmark) used everywhere; each occasion
@@ -41,7 +40,7 @@ typography:
     family: "Source Sans 3"
     fallback: "Calibri, Arial, sans-serif"
     weights: [400, 600]
-  mono:                     # [SUGGESTION] code, SQL and metric names on technical slides
+  mono:                     # code, SQL and metric names on technical slides
     family: "IBM Plex Mono"
     fallback: "Consolas, monospace"
     weights: [400, 500]
@@ -71,7 +70,6 @@ layout:
   margin-x: "0.6 in"
   margin-top: "0.5 in"
   margin-bottom: "0.45 in"
-  grid: "12 columns, 0.25 in gutter"
   footer: "slide number + short section name in caption size, muted, bottom margin"
   corner-radius: "4 pt on cards and callouts; 0 on chart bars and table cells"
   shadows: none
@@ -92,11 +90,11 @@ purpose: it points at the single number the audience must remember.
 |---|---|---|
 | Content background | `paper` | Projects and prints well in client rooms; less glare than pure white |
 | Cover, dividers, closing | `ink` | Gives the deck a frame and signals "new part" without decoration |
-| Titles and body on light | `text` | Contrast 14.7:1 on `paper` |
-| Accent on light (links, key word, icons) | `petrol` | Contrast 4.7:1 on `paper`, 5.1:1 on `white` |
-| Accent on dark | `petrol-light` | `petrol` is only 3.2:1 on `ink`; the light variant is 6.6:1 |
-| The story number or bar | `amber` | 7.3:1 on `ink`; as a fill on light it reads as "this one" |
-| Secondary text | `muted` / `on-ink-muted` | 5.0:1 on `paper` / 7.9:1 on `ink` |
+| Titles and body on light | `text` | Highest contrast for reading |
+| Accent on light (links, key word, icons) | `petrol` | The identity color, readable on light surfaces |
+| Accent on dark | `petrol-light` | `petrol` fails contrast on `ink` |
+| The story number or bar | `amber` | Rare, so it reads as "this one"; a fill on light, never text |
+| Secondary text | `muted` / `on-ink-muted` | Sources, labels and captions |
 
 Measured contrast (WCAG 2.x):
 
@@ -105,14 +103,15 @@ Measured contrast (WCAG 2.x):
 | `text` / `paper` | 14.71 | yes |
 | `muted` / `paper` | 5.03 | yes |
 | `petrol` / `paper` | 4.74 | yes |
-| `petrol` / `white` | 5.09 | yes |
-| `white` / `petrol` | 5.09 | yes |
+| `petrol` / `white` | 5.09 | yes (either way) |
+| `text` / `white` | 15.81 | yes |
+| `muted` / `white` | 5.40 | yes |
 | `amber` / `paper` | 2.04 | **no**: fills only |
 | `white` / `ink` | 16.08 | yes |
-| `amber` / `ink` | 7.34 | yes |
+| `amber` / `ink` | 7.34 | yes (either way: text on an amber fill) |
 | `petrol` / `ink` | 3.16 | **no**: use `petrol-light` |
 | `petrol-light` / `ink` | 6.55 | yes |
-| `ink` / `amber` | 7.34 | yes (text on an amber fill) |
+| `on-ink-muted` / `ink` | 7.91 | yes |
 | `positive` / `paper` | 4.95 | yes |
 | `negative` / `paper` | 6.12 | yes |
 | `steel` / `paper` | 5.03 | yes |
@@ -129,10 +128,10 @@ Measured contrast (WCAG 2.x):
 ### Fonts in .pptx
 
 Google Fonts render correctly only where they are installed or embedded.
-Every template embeds the fonts (PowerPoint for Windows: File › Options › Save ›
-Embed fonts in the file; all three families are OFL, so embedding is allowed)
-and declares the system fallback above for the worst case. Before sending a
-deck to a client, export a PDF as well.
+Generated decks do not embed fonts (python-pptx cannot). Install the three
+families, or embed them before sending (PowerPoint for Windows: File ›
+Options › Save › Embed fonts in the file; all three are OFL, so embedding is
+allowed). The fallbacks above cover the worst case. Always send a PDF too.
 
 ## Wordmark
 
@@ -152,8 +151,6 @@ Typographic only: "Vinicius Valiati" in Manrope ExtraBold, -0.01em tracking.
 - **Direct and assertive.** Short sentences, active voice, no marketing
   adjectives ("robust", "cutting-edge", "seamless").
 - **Numbers carry units and a comparison:** "91% OTIF, down from 95%".
-- **Every chart has a source line** in `caption`, `muted`.
-- **No em dashes** anywhere: use a comma, colon, period or parentheses.
 - Language follows the audience: Portuguese for Brazilian clients and the
   team, English for portfolio and international audiences.
 
@@ -165,9 +162,9 @@ occasion first and applies one of these profiles.
 | Occasion | Perception | Density | Accent usage | Cover | Motion |
 |---|---|---|---|---|---|
 | Status report | Consultative, sober | High (`body-dense` allowed, tables welcome) | `amber` only on the metric that changed most | Dark, minimal | None |
-| Kickoff | Consultative, structured | Medium | `petrol` for structure (phases, owners); `amber` on the key date or goal | Dark | None |
-| Technical / portfolio (EN) | Technical, precise | Medium; code and diagrams allowed | `petrol` for system components; `amber` on the result | Dark | Progressive build on architecture slides only |
-| Pitch | Modern, impactful | Low: one idea per slide, up to 2 big numbers | `amber` on the big numbers; more dark slides allowed | Dark, large title | Progressive build only |
+| Kickoff | Consultative, structured | Medium | `petrol` for structure (phases, owners); `amber` on the key date or goal, when there is one | Dark | None |
+| Technical / portfolio (EN) | Technical, precise | Medium; code and diagrams allowed | `petrol` for system components; `amber` on the result | Dark | Progressive build on architecture slides (HTML version) |
+| Pitch | Modern, impactful | Low: one idea per slide, up to 2 big numbers | `amber` on the big numbers; more dark slides allowed | Dark | None |
 | 1:1 and feedback | Human, close | Low; questions over statements | Almost none; `petrol` for section labels | Light (no dark cover) | None |
 
 ## Charts
@@ -185,28 +182,11 @@ occasion first and applies one of these profiles.
   sign or arrow (color must never be the only signal).
 - Source line under every chart.
 
-## Do and don't
+## Don't
 
-- Do: one message per slide; if it needs a second message, it needs a
-  second slide.
-- Do: conclusion first (executive summary or Situation · Complication ·
-  Resolution) for any audience that may leave early.
-- Do: end client decks with a concrete ask, owner and date.
-- Don't: `amber` as text on light surfaces (2.0:1).
-- Don't: `petrol` as text on `ink` (3.2:1); use `petrol-light`.
-- Don't: gradients, shadows, stock photos of people, clip art or emoji.
-- Don't: more than one `amber` element per slide, except the pitch profile
-  with two big numbers.
-- Don't: logos of clients or employers on templates; client logos enter
-  only in a client deck, supplied by the client.
-
-## Instructions for AI agents
-
-1. Read this file fully before generating any slide, template or visual piece.
-2. Use only the tokens above; no loose hex values, fonts or sizes. If a need
-   is not covered, ask Vinicius instead of inventing a token.
-3. Ask the occasion first and apply its profile.
-4. Check every text color against the contrast table; never use a pair
-   marked "no".
-5. Titles are action titles; verify each one states a conclusion.
-6. Scan the final text for em dashes and remove them.
+- Gradients, shadows, stock photos of people, clip art or emoji.
+- More than one `amber` element per slide, except the pitch profile with two
+  big numbers.
+- Logos of clients or employers on templates; client logos enter only in a
+  client deck, supplied by the client.
+- Colors, fonts or sizes outside the tokens above; if one is missing, ask.

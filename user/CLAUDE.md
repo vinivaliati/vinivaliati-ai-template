@@ -1,7 +1,9 @@
 # Global instructions
 
 These rules apply to every project. A project `CLAUDE.md` may add rules; when
-it contradicts this file, the project file wins for that project.
+it contradicts this file, the project file wins for that project. Likewise,
+when a project's conventions differ from the kit skills, follow the project
+and say so.
 
 ## Who I am
 
@@ -18,7 +20,7 @@ Airflow, Python, cloud data warehouses, SAP as a frequent source.
 - When information is missing or ambiguous, ask. Do not guess table names,
   business rules, grains or credentials.
 - When you propose a convention that is not written down yet, mark it
-  **[SUGESTÃO]** and ask before applying it.
+  **[SUGESTÃO]** in chat (`[SUGGESTION]` in files) and ask before applying it.
 
 ## Working style
 
@@ -37,6 +39,8 @@ Airflow, Python, cloud data warehouses, SAP as a frequent source.
 - Examples and test data are always fictional (for instance, a distribution
   company with orders, OTIF, inventory and transport).
 - Never read `.env` files or secret stores unless I ask for it explicitly.
+- Third-party skills run with my permissions: read every file before
+  installing one, and never install one without my approval.
 
 ## SQL and dbt
 
@@ -56,17 +60,3 @@ Airflow, Python, cloud data warehouses, SAP as a frequent source.
 
 - Never commit, push, rebase or force anything unless I ask.
 - Never commit secrets, data extracts or local environment files.
-
-## Recommended plugins and skills
-
-The kit works without them, but these help:
-
-- **Superpowers**: brainstorming, planning and verification workflows.
-- **Ponytail**: keeps solutions minimal.
-- **find-skills** (vercel-labs/skills): searches the public skills catalog.
-  `vini-ai-kit:project-bootstrap` uses it, when installed, to suggest skills
-  for a new project's stack.
-- **grill-me** (mattpocock/skills): on-demand interview to stress-test a plan.
-
-Third-party skills run with my permissions. Read a skill's files in full
-before installing it, and never install one without my approval.

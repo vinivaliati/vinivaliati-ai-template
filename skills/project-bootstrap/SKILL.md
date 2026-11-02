@@ -29,8 +29,7 @@ How to run it:
   prerequisites are already answered), numbered, in one message. Wait for the
   answers, then ask the next round.
 - **Recommend.** Every question carries your recommended answer, so "ok"
-  accepts it. Use the kit's defaults (Poetry and pyenv, staging, intermediate
-  and marts, sqlfluff, English files) as recommendations.
+  accepts it. Use the defaults in the question bank as recommendations.
 - **Facts are yours, decisions are the user's.** Look up what you can (the
   repository, installed tools, Python and dbt versions) instead of asking.
   Ask only for choices.
@@ -40,16 +39,12 @@ How to run it:
 Format of a round:
 
 ```markdown
-**1. Who is the project for?** Portfolio, a client, or internal use.
+**1. Project type?** Study, portfolio, company or client.
 Recommended: portfolio, so files and README are in English.
 
 **2. Warehouse?** Snowflake, BigQuery, Postgres, Databricks, DuckDB.
 Recommended: DuckDB, since this is a study project (free, runs locally).
 ```
-
-Stack rule: study and portfolio projects default to DuckDB and the kit's
-tools. Company and client projects follow the company's existing stack; ask
-what it is instead of recommending one.
 
 ## 2. Skill discovery
 
@@ -59,10 +54,8 @@ warehouse, the orchestrator, the BI tool). Present at most five, with source,
 install count and what each adds that this kit does not cover. Prefer
 official or well-known sources.
 
-- Never install anything without the user's approval.
-- Before recommending a skill, read its files in full. Skills run with the
-  user's permissions; reject any that fetch remote code, ask for credentials
-  or contradict this kit.
+- Reject any skill that fetches remote code, asks for credentials or
+  contradicts this kit.
 - If `find-skills` is not installed, skip this step and mention once that it
   exists.
 
@@ -87,15 +80,13 @@ Show the tree of files to create and wait for approval. Typical project:
     └── adr/                      # created with the first ADR (assets/docs/adr-template.md)
 ```
 
-Add only what the interview asked for. A project without dbt gets no
+Add only what the interview asked for. A project without SQL gets no
 `.sqlfluff`; a project without Python gets no `pyproject.toml`. The Dev
 Container in [assets/.devcontainer/devcontainer.json](assets/.devcontainer/devcontainer.json)
 is optional; offer it when the user works on Windows with WSL2 or wants a
 reproducible environment for others.
 
 ## 4. Create the files
-
-One file at a time: create, show the full content, wait for approval, next.
 
 - Fill templates with the interview decisions. Leave no placeholder behind;
   if a value is unknown, ask.
@@ -110,7 +101,8 @@ One file at a time: create, show the full content, wait for approval, next.
 Run what applies and show the output:
 
 - `pyenv local <version>` and `poetry install`
-- `pre-commit install` and `pre-commit run --all-files`
+- `pre-commit install` and `pre-commit run --all-files` (needs a git
+  repository; if there is none, ask before `git init`)
 - `dbt debug` and `dbt compile` (dev target only)
 
 If something fails, check [references/troubleshooting.md](references/troubleshooting.md)

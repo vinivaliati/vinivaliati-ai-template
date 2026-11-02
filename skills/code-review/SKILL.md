@@ -32,9 +32,8 @@ twenty guesses.
   matters, how to fix it (with code when it helps).
 - **Say what is good.** Two or three specific things done well. It tells the
   author what to keep doing.
-- **Respect the project's rules.** The project `CLAUDE.md` and the kit skills
-  (`sql-style`, `dbt-modeling`, `python-style`) are the standard; when they
-  disagree, the project wins.
+- **The standard** is the project `CLAUDE.md` and the kit skill for each file
+  type.
 
 ## Severity scale
 
@@ -79,7 +78,8 @@ Choose with impact x probability:
    5. performance and cost (full scans, repeated work, warehouse cost);
    6. maintainability and documentation.
 
-   File-type checklists are in [references/rubric.md](references/rubric.md).
+   Check each file against the kit skill for its type; the dbt findings
+   table is in [references/rubric.md](references/rubric.md).
 5. **Classify** each verified finding with the matrix and the escalation rules
    in the rubric.
 6. **Write the report** using
@@ -120,8 +120,8 @@ when something looks odd but might be intentional, ask.
 
 ## Language
 
-Talk to the user in their language. Text meant to be posted on a PR follows
-the language the team uses in that repository.
+Text meant to be posted on a PR follows the language the team uses in that
+repository.
 
 ## Isolated review
 

@@ -11,8 +11,6 @@
 
 The global `~/.claude/CLAUDE.md` applies. On top of it:
 
-- Use the `vini-ai-kit` skills: `sql-style`, `dbt-modeling`, `python-style`,
-  `code-review`<, others that apply>.
 - <Project-specific rule, only if it differs from the kit.>
 
 ## Stack and commands

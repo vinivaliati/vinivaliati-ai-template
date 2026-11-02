@@ -1,15 +1,14 @@
 ---
 name: data-quality
 description: >
-  Data quality checks beyond a model's own tests: source freshness, volume
-  changes, reconciliation between a model and its source, distribution
-  anomalies, and what to do when a check fails. Use when the user asks
-  "how do we know this data is right", "add data quality", "monitor this
-  table", "reconcile with the source", "the numbers don't match", "valida a
-  qualidade", "confere com a origem", "por que esse número mudou", or after
-  building an incremental model without periodic full refresh. Do not use for
-  a model's basic tests (grain, relationships, accepted values: use
-  dbt-modeling) or for code review.
+  Data quality checks beyond a model's own tests: freshness, volume,
+  reconciliation with the source, distribution anomalies, and what to do when a
+  check fails. Use when the user asks "how do we know this data is right",
+  "monitor this table", "the numbers don't match", "valida a qualidade",
+  "confere com a origem", "por que esse número mudou", or after building an
+  incremental model without a scheduled full refresh. Do not use for a model's
+  basic tests (use dbt-modeling), reconciling a migration with legacy output
+  (use legacy-to-dbt) or code review.
 ---
 
 # Data quality
@@ -34,7 +33,7 @@ alerts. Write the owner in the test's `meta` or in a comment.
 |---|---|---|
 | Freshness | Load did not arrive or is late | [SUGGESTION] Suggest for sources behind consumer-facing marts; enable only after the user confirms load frequency and tolerance |
 | Volume | Rows missing or duplicated in a load | The source loads in batches that can arrive partial |
-| Reconciliation | Model drifted from the source | Incremental models without regular full refresh (mandatory); financial or executive marts |
+| Reconciliation | Model drifted from the source | Incremental models without a scheduled full refresh (mandatory); financial or executive marts |
 | Distribution | Values shift (nulls spike, a category disappears) | Marts feeding decisions or ML |
 | Business rules | Logic broke (OTIF above 100%, negative stock) | Rules the business states as always true |
 

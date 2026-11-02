@@ -21,14 +21,13 @@ Write the top for the first and the rest for the second.
 ## Rules
 
 - **English**, plain and direct. No marketing adjectives ("robust",
-  "cutting-edge", "seamless"). No em dashes.
+  "cutting-edge", "seamless").
 - **The first screen answers three questions**: what it is, what problem it
   solves, what the result is (with a number when possible).
 - **Every command is copy-pasteable and was run** before it went in the
   README. Show the output when it proves something (tests passing, row counts).
 - **Diagrams in Mermaid**, so they render on GitHub and stay editable.
-- **Fictional or public data only.** No client names, logos, internal URLs or
-  real extracts. Say where the data comes from.
+- **Say where the data comes from** (fictional or public).
 - **Link, do not repeat**: decisions live in `docs/decisions.md` and ADRs,
   details in `docs/`. The README points to them.
 - **Short beats complete.** If a section has nothing real to say, drop it.
@@ -115,9 +114,9 @@ The README is the front door; the repository behind it is judged too.
    folder tree, CI config.
 2. Ask for what the files cannot tell: the target audience (role and level),
    the result numbers, links to show (dashboard, LinkedIn).
-3. Run the "Run it" commands in a clean shell and fix the README (or the
-   project) until they work.
+3. Run the "Run it" commands in a clean shell (ask before `dbt build`, dev
+   target only) and fix the README (or the project) until they work.
 4. Write the README from the skeleton, dropping empty sections.
 5. Go through the repository checklist and report what is missing, without
    changing it unless the user asks.
-6. Check: no em dashes, no client names, every link resolves.
+6. Check: no client names, every link resolves.

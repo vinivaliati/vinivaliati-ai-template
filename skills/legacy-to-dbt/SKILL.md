@@ -28,10 +28,8 @@ output cannot be validated, so nobody will trust it.
    legacy output. Propose improvements only after reconciliation passes.
 4. **Never guess hidden logic.** Called functions, procedures, macros or
    lookups you cannot see may change values or filters. Flag each one and ask.
-5. **The project's conventions win.** Read existing models first; use the
-   kit defaults (`dbt-modeling`, `sql-style`) only where the project has none.
-6. **Client code stays in the client repo.** Report names, filter values and
-   field mappings from a real system never go into the kit or public repos.
+5. **Reuse before creating.** Read the project's existing models first; use
+   the kit defaults (`dbt-modeling`, `sql-style`) only where it has none.
 
 ## Workflow
 
@@ -50,8 +48,8 @@ output cannot be validated, so nobody will trust it.
 6. **Write the models** with `dbt-modeling` and `sql-style`.
 7. **Audit the joins** against the legacy code (below) and fix mismatches
    before running anything.
-8. **Compile, then reconcile** (below). `dbt build` only after the user
-   approves, in dev.
+8. **Compile, build in dev after the user approves, then reconcile** (below):
+   reconciliation needs the built model.
 
 ## Example: reading legacy code
 

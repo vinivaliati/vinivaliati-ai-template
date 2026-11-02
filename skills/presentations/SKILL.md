@@ -67,11 +67,8 @@ uv run --with python-pptx==1.0.2 --with pyyaml==6.0.3 skills/presentations/scrip
 - One message per slide. A second message means a second slide.
 - Conclusion first: an executive summary up front for any audience that may
   leave early.
-- At most one `amber` element per slide (two big numbers in a pitch).
-- Charts: bars start at zero, the story bar in `amber`, the rest
-  `bar-neutral`, values labeled, a source line under every chart.
 - Tables: at most 6 rows and 5 columns on a slide; more goes to the appendix.
-- Never below 11 pt. Content that does not fit goes to another slide.
+- Visual rules (amber, charts, minimum size) are in `BRAND.md`.
 - Client decks end with a concrete ask, an owner and a date.
 
 ## Check before delivering
@@ -80,7 +77,7 @@ uv run --with python-pptx==1.0.2 --with pyyaml==6.0.3 skills/presentations/scrip
 - [ ] Every text color pair is "yes" in the `BRAND.md` contrast table.
 - [ ] Only brand tokens: no loose hex values, fonts or sizes.
 - [ ] Every chart has a source; every number has a unit and a comparison.
-- [ ] No em dashes; no client names, logos or data outside a client deck.
+- [ ] No client names, logos or data outside a client deck.
 - [ ] Rendered images reviewed: no overflow, overlap or cut text.
 
 Render for review (LibreOffice):

@@ -1,14 +1,13 @@
 ---
 name: python-style
 description: >
-  Python conventions for data projects: pyenv and Poetry, ruff for lint and
-  format, type hints, logging, error handling, safe SQL from Python, pandas
-  habits, project layout and pytest. Use when writing, refactoring or
-  reviewing Python (.py files, ingestion scripts, Airflow task code, small
-  apps, notebooks turned into modules), when setting up pyproject.toml, or
-  when the user says "write a script", "clean up this Python", "add tests",
-  "escreve um script", "organiza esse código Python". Do not use for DAG
-  structure (use airflow-dag) or SQL inside .sql files (use sql-style).
+  Python conventions for data projects: pyenv and Poetry, ruff, type hints,
+  logging, configuration, safe SQL from Python and pytest. Use when writing or
+  refactoring Python (scripts, ingestion, Airflow task code, notebooks turned
+  into modules), setting up pyproject.toml, or when the user says "write a
+  script", "add tests", "escreve um script", "organiza esse código Python". Do
+  not use for DAG structure (use airflow-dag), SQL files (use sql-style) or
+  reviewing a diff or PR (use code-review).
 ---
 
 # Python style
@@ -57,31 +56,15 @@ Scripts that are run, not imported, still live in the package and expose a
 
 1. **Type hints on every public function** (parameters and return). Why: the
    signature becomes documentation the editor checks.
-2. **Docstring on public functions when the name is not enough**: one line
-   for what it does, then arguments or raises only if non-obvious.
-3. **`logging`, never `print`**, in code that runs unattended. Log events and
+2. **`logging`, never `print`**, in code that runs unattended. Log events and
    counts, never personal data or secrets.
-4. **Catch specific exceptions.** No bare `except:` and no
-   `except Exception: pass`. If you catch, log and re-raise or handle on purpose.
-5. **Configuration from the environment** (`os.environ`, `.env` loaded in
+3. **Configuration from the environment** (`os.environ`, `.env` loaded in
    development). No credentials or URLs in code or default arguments.
-6. **Timeouts on every network and database call.**
-7. **SQL from Python uses parameters**, never f-strings or `+` with values.
+4. **Timeouts on every network and database call.**
+5. **SQL from Python uses parameters**, never f-strings or `+` with values.
    Long SQL lives in `.sql` files that follow `sql-style`.
-8. **`pathlib` for paths**, not string concatenation.
-9. **No mutable default arguments**; use `None` and create inside.
-10. **Small functions that do one thing.** A function that needs "and" in its
-    name is two functions.
-11. **Constants in `UPPER_SNAKE_CASE`** at module top; no magic numbers in
-    logic.
-
-### pandas and dataframes
-
-- Set dtypes when reading (`dtype=`, `parse_dates=`); never trust inference
-  for ids (leading zeros) or money.
-- Vectorize; avoid `apply` row by row and `iterrows` on large frames.
-- No chained assignment; use `.loc` or `assign`.
-- Do not print or log frames that contain personal data.
+6. **Set dtypes when reading data** (`dtype=`, `parse_dates=`); never trust
+   inference for ids (leading zeros) or money.
 
 ## Example
 
@@ -131,11 +114,8 @@ def get(d, out=[]):                                   # no types, mutable defaul
 
 ## Tests
 
-- One test file per module, `test_<behavior>` names that read as sentences:
-  `test_fetch_deliveries_raises_on_http_error`.
 - Small fictional data built in the test or in fixtures; no real extracts.
-- Unit tests never hit the network or a warehouse; mock at the boundary
-  (`requests`, the database client).
+- Unit tests never hit the network or a warehouse.
 - Test the edge cases that matter for data: empty input, nulls, duplicates,
   time zones, very large values.
 
@@ -145,4 +125,3 @@ def get(d, out=[]):                                   # no types, mutable defaul
    there when it is consistent.
 2. Write the code following the rules above.
 3. Run `ruff check --fix`, `ruff format` and `pytest`; show the output.
-4. If a rule here conflicts with the project, follow the project and say so.

@@ -11,15 +11,15 @@ there is to know about each tool. Every example uses fictional data.
 ## Install
 
 ```bash
-git clone https://github.com/<github-user>/<repo>.git
-cd <repo>
+git clone https://github.com/vinivaliati/vinivaliati-ai-template.git
+cd vinivaliati-ai-template
 ./install.sh   # installs user/CLAUDE.md as ~/.claude/CLAUDE.md, with a backup
 ```
 
 Then, inside Claude Code:
 
 ```text
-/plugin marketplace add <github-user>/<repo>
+/plugin marketplace add vinivaliati/vinivaliati-ai-template
 /plugin install vini-ai-kit@vinivaliati
 ```
 

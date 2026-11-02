@@ -1,15 +1,14 @@
 ---
 name: sql-style
 description: >
-  SQL formatting and writing conventions for any warehouse (Snowflake, BigQuery,
-  Postgres, Databricks, Redshift): leading commas, lowercase keywords, one
-  column per line, named CTEs ending in a `final` CTE, explicit aliases and
-  `cast()`. Use when writing, reformatting or reviewing any .sql file or SQL
-  snippet, dbt model SQL, ad hoc analysis queries, or when the user says
-  "format this query", "clean up this SQL", "lint", "sqlfluff", "padroniza essa
-  query" or "deixa no meu padrão". Also use when setting up sqlfluff in a
-  project. Do not use for dbt project structure, layers, YML or tests (use
-  dbt-modeling) or for migrating legacy logic (use legacy-to-dbt).
+  SQL formatting and writing conventions for any warehouse: leading commas,
+  lowercase keywords, one column per line, named CTEs ending in `final`,
+  explicit aliases and `cast()`, plus the sqlfluff setup. Use when writing or
+  reformatting any .sql file, dbt model SQL or ad hoc query, or when the user
+  says "format this query", "clean up this SQL", "lint", "padroniza essa query"
+  or "deixa no meu padrão". Do not use for dbt structure, YML or tests (use
+  dbt-modeling), legacy migrations (use legacy-to-dbt) or reviewing a diff or
+  PR (use code-review).
 ---
 
 # SQL style
@@ -40,8 +39,9 @@ and a code review diff shows only the lines that changed.
    `cte1` or `tmp`.
 7. **Import CTEs first.** One CTE per source, `select *` plus filters only.
    In dbt, `ref()` and `source()` appear only here.
-8. **End with a `final` CTE and `select * from final`.** Why: anyone can
-   debug a model by swapping `final` for any CTE name in the last line.
+8. **Models end with a `final` CTE and `select * from final`.** Why: anyone
+   can debug a model by swapping `final` for any CTE name in the last line.
+   Tests and analyses may end with their last select.
 9. **`select *` only in import CTEs and in `select * from final`.** Every
    other CTE lists its columns explicitly, so the column contract is visible
    in the code.
@@ -82,7 +82,7 @@ with
     orders as (
         select *
         from {{ ref('stg_erp__orders') }}
-        where order_status_code != 'cancelled'
+        where order_status_code != 'X'  -- cancelled
     )
 
     , deliveries as (
@@ -99,7 +99,7 @@ with
         -- a redelivery creates a new row; the last attempt is the one the customer saw
         qualify row_number() over (
             partition by order_id
-            order by delivered_at desc
+            order by delivered_at desc, delivery_id desc
         ) = 1
     )
 
@@ -152,7 +152,7 @@ SELECT o.ORDER_ID, o.CUSTOMER_ID,                     -- uppercase, trailing com
 FROM {{ ref('stg_erp__orders') }} o                   -- ref outside an import CTE, 1-letter alias
 JOIN (SELECT DISTINCT * FROM {{ ref('stg_tms__deliveries') }}) d  -- subquery, bare join, distinct hides redeliveries
   ON d.ORDER_ID = o.ORDER_ID
-WHERE o.ORDER_STATUS_CODE <> 'cancelled'
+WHERE o.ORDER_STATUS_CODE <> 'X'
 GROUP BY 1, 2, 3, 4                                   -- positional group by
 ```
 
@@ -160,9 +160,7 @@ GROUP BY 1, 2, 3, 4                                   -- positional group by
 
 1. **Detect the dialect** from the project (`profiles.yml`, `dbt_project.yml`,
    existing models, `.sqlfluff`). If it is unclear, ask.
-2. **Read existing models** before writing. If the project already follows a
-   different documented style, ask which one wins; do not mix styles in one
-   file.
+2. **Read existing models** before writing; do not mix styles in one file.
 3. **Write or rewrite** following the rules above. For dialect-specific
    functions (dates, dedup, string handling), read
    [references/dialects.md](references/dialects.md).

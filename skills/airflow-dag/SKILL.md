@@ -23,8 +23,11 @@ runs.
 1. **Idempotent tasks.** A run for a date overwrites that date's output
    (partition, file or `delete` + `insert`); it never appends blindly. Why: a
    retry after a partial failure must not duplicate rows.
-2. **Dates come from the run**, the data interval or `ds`, never `now()` or
-   `today()`. Why: a backfill for March must load March.
+2. **Dates come from the run** (`ds`, `logical_date`), never `now()` or
+   `today()`. Why: a backfill for March must load March. In Airflow 3 a cron
+   schedule has no data interval: `ds` is the trigger date, so load the period
+   you mean explicitly (a 06:00 run that loads yesterday uses the day before
+   `ds`).
 3. **Fixed `start_date` in the past, `catchup=False`** unless the user wants
    history loaded on deploy.
 4. **Retries and timeouts on every task**: `retries`, `retry_delay` and
@@ -54,8 +57,7 @@ per-model retries and lineage in the UI. Propose it only for large projects
 where that matters, and ask before adding the dependency.
 
 The dbt target comes from the environment (`profiles.yml` with `env_var`),
-not from the DAG. The kit's rule still holds: Claude never runs a DAG or dbt
-against prod.
+not from the DAG.
 
 ## Example
 
@@ -96,12 +98,14 @@ def deliveries_daily():
         # Imported here so the scheduler does not load it on every parse.
         from tms_ingest.deliveries import land_deliveries_for_date
 
-        # Overwrites the partition for ds, so retries and backfills are safe.
-        return land_deliveries_for_date(ds)
+        # The 06:00 run loads the previous day; ds is the trigger date (rule 2).
+        delivery_date = pendulum.parse(ds).subtract(days=1).to_date_string()
+        # Overwrites that date's partition, so retries and backfills are safe.
+        return land_deliveries_for_date(delivery_date)
 
     dbt_build = BashOperator(
         task_id="dbt_build",
-        bash_command=f"dbt build --project-dir {DBT_PROJECT_DIR} --select +fct_deliveries",
+        bash_command=f"dbt build --project-dir {DBT_PROJECT_DIR} --select source:tms.deliveries+",
     )
 
     land_deliveries() >> dbt_build

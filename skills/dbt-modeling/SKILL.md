@@ -1,16 +1,15 @@
 ---
 name: dbt-modeling
 description: >
-  How to design and build dbt models: staging, intermediate and marts layers,
-  model and column naming, contracts, YML layout, required tests, profiling the
-  source before writing, and a model spec before any SQL. Use when creating,
-  changing or reviewing a dbt model, source, YML file or dbt_project.yml; when
-  the user says "create a model", "new staging for", "build a fact/dimension",
-  "add this column to the mart", "cria um modelo", "modela essa tabela" or
-  "sobe essa fonte no dbt"; or when deciding grain, keys or materialization.
-  Do not use for SQL formatting alone (use sql-style), for migrating legacy
-  logic such as ABAP or stored procedures (use legacy-to-dbt) or for test
-  strategy beyond the minimum below (use data-quality).
+  How to design and build dbt models: layers, naming, contracts, YML, tests,
+  profiling the source and a model spec before any SQL. Use when creating or
+  changing a dbt model, source, YML file or dbt_project.yml, or deciding grain,
+  keys or materialization; when the user says "create a model", "new staging
+  for", "build a fact/dimension", "cria um modelo", "modela essa tabela" or
+  "sobe essa fonte no dbt". Do not use for SQL formatting alone (use
+  sql-style), legacy migrations (use legacy-to-dbt), freshness, volume or
+  reconciliation checks (use data-quality) or reviewing a diff or PR (use
+  code-review).
 ---
 
 # dbt modeling
@@ -139,19 +138,18 @@ reconciliation and anomaly checks belong to the `data-quality` skill.
 
 ## Workflow
 
-1. **Spec first.** Fill [assets/model-spec.yml](assets/model-spec.yml) with the
-   user: purpose, consumer, grain, keys, sources, columns, business rules.
-   Ask about every missing field; do not guess grain, keys or rules. Show the
-   filled spec and wait for approval before writing SQL.
+1. **Spec first.** Draft [assets/model-spec.yml](assets/model-spec.yml) with
+   the user: purpose, consumer, grain, keys, sources, business rules. Ask
+   about every missing field; do not guess grain, keys or rules.
 2. **Read the project.** `dbt_project.yml`, the existing models in the
    target folders, `packages.yml`, macros. Reuse existing staging and
-   intermediate models instead of creating parallel ones. If the project
-   breaks a rule here on purpose, follow the project and mention it.
+   intermediate models instead of creating parallel ones.
 3. **Profile the source.** Run the queries in
    [references/profiling.md](references/profiling.md) (sample, candidate key
    uniqueness, nulls, decimal part, date range, latest timestamp). Summarize
-   the results before writing. If you cannot query the warehouse, ask the
-   user to run them and paste the output.
+   the results. If you cannot query the warehouse, ask the user to run them
+   and paste the output. Complete the spec (column types, profiling summary),
+   show it and wait for approval before writing SQL.
 4. **Write SQL and YML together.** SQL structure comes from the `sql-style`
    example; staging renames follow [references/naming.md](references/naming.md);
    YML tests follow [references/testing.md](references/testing.md).
@@ -160,13 +158,9 @@ reconciliation and anomaly checks belong to the `data-quality` skill.
 5. **Incremental needs a written justification.** A full rebuild is the
    default because it is simpler and cannot drift. Before proposing
    incremental, read [references/incremental.md](references/incremental.md),
-   describe the nature of the data in the spec and get approval:
-   - why a full rebuild is not enough, with numbers (rows, run time, cost);
-   - how rows arrive: append-only events, updates in place, hard deletes;
-   - whether late or backdated data exists (created today with an event
-     date in the past) and how late it can arrive;
-   - which column reliably marks a change, and the evidence for it;
-   - the lookback window and the plan for periodic full refreshes.
+   describe the nature of the data in the spec's `incremental` block (why not
+   a full rebuild, how rows arrive, late and backdated data, change column
+   with evidence, lookback, full refresh plan) and get approval.
 
    Why: an incremental filter on `extracted_at` or on a business date works
    in the demo and then silently drops backdated rows or corrections. If
