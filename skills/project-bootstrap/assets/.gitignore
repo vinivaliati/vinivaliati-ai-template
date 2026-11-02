@@ -1,0 +1,43 @@
+# Secrets and local config: never commit. Keep .env.example with names only.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# dbt
+target/
+dbt_packages/
+logs/
+.user.yml
+
+# DuckDB and local data
+*.duckdb
+*.duckdb.wal
+data/
+
+# Airflow (local runs)
+airflow.db
+airflow-webserver.pid
+
+# OS and editors
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+.idea/

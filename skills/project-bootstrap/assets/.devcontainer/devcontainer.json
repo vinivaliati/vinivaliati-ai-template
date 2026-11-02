@@ -1,0 +1,17 @@
+// Optional. A reproducible environment for VS Code (Dev Containers extension)
+// on WSL2, Linux or macOS. Inside the container the image fixes the Python
+// version, so pyenv is not needed there. Match the tag to .python-version.
+{
+  "name": "<project-name>",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "postCreateCommand": "pipx install poetry pre-commit && poetry install && pre-commit install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "dorzey.vscode-sqlfluff"
+      ]
+    }
+  }
+}

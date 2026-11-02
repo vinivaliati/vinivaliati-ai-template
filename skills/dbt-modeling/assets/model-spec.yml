@@ -1,0 +1,56 @@
+# Model spec: fill this with the user before writing any SQL.
+# Every field without a value is a question to ask, not a blank to guess.
+# Save the approved spec next to the model or in docs/specs/<model_name>.yml.
+
+name: "<fct_|dim_|int_|stg_><name>"
+layer: "<staging | intermediate | marts>"
+purpose: "<What decision or product this model supports, in one or two sentences.>"
+consumer: "<Who or what reads it (BI dashboard, app, export, other models).>"
+owner: "<Person or team that answers questions about it.>"
+
+grain: "<one row per ...>"
+
+keys:
+  primary: ["<column>"]               # one or more columns that make a row unique
+  surrogate: "<entity>_sk"            # remove if not needed (see naming.md)
+  foreign:
+    - column: "<entity>_id"
+      references: "<model>.<column>"  # only models that already exist
+
+sources:                              # refs or sources this model reads
+  - "ref('stg_<source>__<entities>')"
+
+materialization: table                # view (staging) | table | incremental (needs the block below)
+
+columns:                              # in order: ids, strings, numerics, booleans, dates, timestamps
+  - name: "<column_name>"
+    data_type: "<type from profiling>"
+    description: "<English. What it holds, with its unit when relevant.>"
+    from: "<source column or expression>"
+    tests: ["<unique, not_null, relationships, accepted_values, ...>"]
+
+business_rules:                       # every filter, calculation, dedup or join rule, in plain language
+  - "<rule>"
+
+# Only when materialization is incremental. Every field needs evidence.
+# See references/incremental.md.
+incremental:
+  why_not_full_rebuild: "<rows, run time, cost>"
+  arrival_pattern: "<append_only | updates_in_place | snapshots>"
+  hard_deletes: "<true or false, and how they are handled>"
+  late_data: "<how late rows arrive, from profiling; the tail, not the average>"
+  change_column: "<column that moves on every insert and update>"
+  change_column_evidence: "<how this was verified>"
+  unique_key: "<column>"
+  strategy: "<merge | delete+insert | insert_overwrite | append | microbatch>"
+  lookback_days: "<number covering the late-data tail plus margin>"
+  full_refresh_plan: "<schedule, or why it is impossible and how it is reconciled>"
+
+profiling_summary: |
+  <Paste the report from references/profiling.md.>
+
+defaults_applied:                     # types or names chosen without an explicit answer
+  - "<column, decision and reason>"
+
+open_questions:
+  - "<question for the user>"

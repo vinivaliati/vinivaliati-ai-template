@@ -1,0 +1,88 @@
+# sqlfluff config for the vini-ai-kit SQL style.
+# Copy this file and the .sqlfluff_libs/ folder to the project root, then
+# set `dialect` (and `templater` for dbt).
+# Only the settings this style depends on are listed; everything else uses
+# sqlfluff defaults.
+
+[sqlfluff]
+# Change to: bigquery, postgres, databricks, redshift, ...
+dialect = snowflake
+# jinja works without a warehouse connection (fast, CI friendly).
+# Switch to `dbt` (needs sqlfluff-templater-dbt) for full macro rendering.
+templater = jinja
+max_line_length = 120
+# ST06 wants wildcards and simple columns before calculations; we group
+#      columns by type instead (ids, strings, numerics, booleans, dates).
+# AM04 flags `select *`; we allow it in import CTEs and in the final select.
+exclude_rules = ST06, AM04
+# Undefined Jinja variables warn instead of failing.
+warnings = TMP
+
+[sqlfluff:templater:jinja]
+# Provides ref(), source(), config(), var() and is_incremental().
+apply_dbt_builtins = True
+# Lint-only stand-ins for package macros such as dbt_utils; without them a
+# model calling dbt_utils.generate_surrogate_key fails to parse. Copy the
+# folder next to this file.
+library_path = .sqlfluff_libs
+
+[sqlfluff:indentation]
+indent_unit = space
+tab_space_size = 4
+indented_ctes = True
+indented_using_on = True
+indented_then = True
+
+[sqlfluff:layout:type:comma]
+line_position = leading
+
+[sqlfluff:layout:type:binary_operator]
+line_position = leading
+
+[sqlfluff:layout:type:comparison_operator]
+line_position = leading
+
+[sqlfluff:layout:type:set_operator]
+line_position = alone:strict
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.length]
+min_alias_length = 3
+
+[sqlfluff:rules:ambiguous.join]
+fully_qualify_join_types = inner
+
+[sqlfluff:rules:ambiguous.column_references]
+group_by_and_order_by_style = explicit
+
+[sqlfluff:rules:convention.casting_style]
+preferred_type_casting_style = cast
+
+[sqlfluff:rules:convention.select_trailing_comma]
+select_clause_trailing_comma = forbid
+
+[sqlfluff:rules:references.keywords]
+unquoted_identifiers_policy = aliases
+
+[sqlfluff:rules:structure.subquery]
+forbid_subquery_in = both

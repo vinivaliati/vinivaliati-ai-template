@@ -1,0 +1,17 @@
+{
+  "name": "vinivaliati",
+  "owner": {
+    "name": "Vinicius Valiati"
+  },
+  "metadata": {
+    "description": "Vinicius Valiati's Claude Code plugins."
+  },
+  "plugins": [
+    {
+      "name": "vini-ai-kit",
+      "source": "./",
+      "description": "Personal AI kit for analytics engineering: SQL and dbt conventions, legacy logic to dbt, data quality, Airflow, Python, project bootstrap, code review, portfolio READMEs and branded presentations.",
+      "version": "0.1.0"
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technical talk</title>
+<!--
+  Technical / portfolio deck in Vinicius Valiati's brand (see brand/BRAND.md).
+  Keys: right, space or page down = next; left or page up = back; home and end.
+  ?static shows every slide and step at once, for screenshots and PDF (print at 1920 x 1080).
+  Elements with data-step appear one by one; use them only on architecture slides.
+  Sizes are BRAND.md points x 2, on a 1920 x 1080 canvas scaled to the window.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #12232E;
+    --petrol: #0F7B78;
+    --petrol-light: #5FB3AE;
+    --amber: #E0A526;
+    --paper: #F5F7F8;
+    --white: #FFFFFF;
+    --text: #17242E;
+    --muted: #5E6C77;
+    --on-ink-muted: #A9B8C2;
+    --line: #D5DDE2;
+    --heading: "Manrope", "Segoe UI", Arial, sans-serif;
+    --body: "Source Sans 3", Calibri, Arial, sans-serif;
+    --mono: "IBM Plex Mono", Consolas, monospace;
+    --margin-x: 86px;
+    --margin-top: 72px;
+    --margin-bottom: 65px;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; background: var(--ink); overflow: hidden; }
+  .deck { position: absolute; top: 50%; left: 50%; width: 1920px; height: 1080px; transform-origin: center; }
+  .slide {
+    position: absolute; inset: 0; display: none; flex-direction: column;
+    padding: var(--margin-top) var(--margin-x) var(--margin-bottom);
+    background: var(--paper); color: var(--text); font: 400 36px/1.35 var(--body);
+  }
+  .slide.active { display: flex; }
+  .slide.dark { background: var(--ink); color: var(--white); }
+
+  .label { font: 600 24px var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--petrol); margin-bottom: 20px; }
+  .dark .label { color: var(--petrol-light); }
+  h1 { font: 800 88px/1.05 var(--heading); max-width: 1500px; }
+  h2 { font: 700 56px/1.15 var(--heading); max-width: 1600px; margin-bottom: 64px; }
+  .subtitle { font: 400 40px/1.3 var(--body); color: var(--on-ink-muted); margin-top: 32px; }
+  .caption { font: 400 22px var(--body); color: var(--muted); }
+  .dark .caption { color: var(--on-ink-muted); }
+  ul { padding-left: 1.1em; max-width: 1300px; }
+  li { margin-bottom: 20px; }
+  li::marker { color: var(--petrol); }
+
+  .cover { justify-content: flex-end; }
+  .cover h1 { margin-bottom: auto; margin-top: 300px; }
+  .bottom-row { display: flex; justify-content: space-between; align-items: flex-end; }
+  .wordmark { font: 800 28px var(--heading); letter-spacing: -0.01em; }
+  .footer { margin-top: auto; display: flex; justify-content: space-between; }
+
+  .flow { display: flex; align-items: center; gap: 28px; }
+  .node { border: 3px solid var(--petrol); border-radius: var(--radius); background: var(--white); padding: 28px 32px; min-width: 250px; }
+  .node strong { display: block; font: 700 36px var(--heading); }
+  .node span { font-size: 28px; color: var(--muted); }
+  .node.result { background: var(--amber); border-color: var(--amber); color: var(--ink); }
+  .node.result span { color: var(--ink); }
+  .arrow { font-size: 48px; color: var(--muted); }
+
+  pre { font: 400 28px/1.5 var(--mono); background: var(--white); border-radius: var(--radius); padding: 48px 56px; color: var(--text); }
+  .big-number { font: 800 192px/1 var(--heading); color: var(--amber); margin-top: 120px; }
+
+  [data-step] { opacity: 0; }
+  [data-step].shown { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-step] { transition: opacity 300ms ease-out; }
+  }
+
+  /* ?static: every slide stacked, every step visible. */
+  .static, .static body { overflow: visible; height: auto; }
+  .static .deck { position: static; transform: none; height: auto; }
+  .static .slide { position: relative; display: flex; height: 1080px; }
+  .static [data-step] { opacity: 1; transition: none; }
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    .slide { break-after: page; }
+  }
+</style>
+</head>
+<body>
+<main class="deck">
+
+  <section class="slide dark cover">
+    <h1>From monthly spreadsheets to daily, tested OTIF</h1>
+    <div class="bottom-row">
+      <div>
+        <p class="subtitle">A dbt and Airflow case study</p>
+        <p class="wordmark" style="margin-top: 96px">Vinicius Valiati</p>
+      </div>
+      <p class="caption">&lt;date&gt;</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Problem">
+    <p class="label">Problem</p>
+    <h2>Planning saw OTIF once a month, too late to act</h2>
+    <ul>
+      <li>Numbers came from a spreadsheet rebuilt by hand every month</li>
+      <li>Two teams reported two different OTIF values</li>
+      <li>No way to see which carrier caused the misses</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-section="Architecture">
+    <p class="label">Architecture</p>
+    <h2>Raw extracts become one tested mart every morning</h2>
+    <div class="flow">
+      <div class="node" data-step><strong>ERP and TMS</strong><span>daily extracts</span></div>
+      <div class="arrow" data-step>&rarr;</div>
+      <div class="node" data-step><strong>Airflow</strong><span>lands raw files</span></div>
+      <div class="arrow" data-step>&rarr;</div>
+      <div class="node" data-step><strong>dbt</strong><span>staging, tests, marts</span></div>
+      <div class="arrow" data-step>&rarr;</div>
+      <div class="node result" data-step><strong>Daily OTIF</strong><span>by carrier</span></div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key decision">
+    <p class="label">Key decision</p>
+    <h2>Incremental with a justified 45-day lookback</h2>
+<pre>{% if is_incremental() %}
+where _loaded_at &gt;= (
+    select dateadd('day', -45, max(_loaded_at))
+    from {{ this }}
+)
+{% endif %}</pre>
+    <p class="caption" style="margin-top: 20px">Profiling: 99.9% of rows arrive within 30 days, max seen 41</p>
+  </section>
+
+  <section class="slide dark" data-section="Result">
+    <h2>Decisions now take one day instead of a month</h2>
+    <p class="big-number">1 day</p>
+    <p class="subtitle">from data to decision, down from 30</p>
+  </section>
+
+  <section class="slide" data-section="Next">
+    <p class="label">Next</p>
+    <h2>Next: freshness checks, then a semantic layer</h2>
+    <ul>
+      <li>Add freshness checks once the load schedule is stable</li>
+      <li>Expose the metric in a semantic layer</li>
+    </ul>
+  </section>
+
+  <section class="slide dark">
+    <h2 style="margin-top: 260px">Thank you</h2>
+    <p class="subtitle">Code and docs: github.com/&lt;your-user&gt;/&lt;repo&gt;</p>
+    <div style="margin-top: auto">
+      <p class="wordmark">Vinicius Valiati</p>
+      <p class="caption">linkedin.com/in/&lt;your-profile&gt;</p>
+    </div>
+  </section>
+
+</main>
+<script>
+  const slides = [...document.querySelectorAll(".slide")];
+  const deck = document.querySelector(".deck");
+
+  // Footer with section name and slide number on light content slides.
+  slides.forEach((slide, index) => {
+    if (slide.classList.contains("dark")) return;
+    const footer = document.createElement("div");
+    footer.className = "footer caption";
+    footer.innerHTML = `<span>${slide.dataset.section || ""}</span><span>${index + 1}</span>`;
+    slide.append(footer);
+  });
+
+  if (new URLSearchParams(location.search).has("static")) {
+    document.documentElement.classList.add("static");
+  } else {
+    let current = Math.min(Math.max(Number(location.hash.slice(1)) - 1 || 0, 0), slides.length - 1);
+    const steps = (slide) => [...slide.querySelectorAll("[data-step]")];
+
+    const show = (index, revealAll = false) => {
+      slides[current].classList.remove("active");
+      current = index;
+      slides[current].classList.add("active");
+      steps(slides[current]).forEach((step) => step.classList.toggle("shown", revealAll));
+      history.replaceState(null, "", `#${current + 1}`);
+    };
+
+    const next = () => {
+      const hidden = steps(slides[current]).find((step) => !step.classList.contains("shown"));
+      if (hidden) hidden.classList.add("shown");
+      else if (current < slides.length - 1) show(current + 1);
+    };
+
+    const back = () => {
+      const shown = steps(slides[current]).filter((step) => step.classList.contains("shown"));
+      if (shown.length) shown.at(-1).classList.remove("shown");
+      else if (current > 0) show(current - 1, true);
+    };
+
+    const fit = () => {
+      const scale = Math.min(innerWidth / 1920, innerHeight / 1080);
+      deck.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    };
+
+    document.addEventListener("keydown", (event) => {
+      if (["ArrowRight", " ", "PageDown"].includes(event.key)) next();
+      else if (["ArrowLeft", "PageUp"].includes(event.key)) back();
+      else if (event.key === "Home") show(0);
+      else if (event.key === "End") show(slides.length - 1, true);
+      else return;
+      event.preventDefault();
+    });
+    addEventListener("resize", fit);
+    slides[current].classList.add("active");
+    fit();
+  }
+</script>
+</body>
+</html>

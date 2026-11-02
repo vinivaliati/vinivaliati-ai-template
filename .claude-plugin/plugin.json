@@ -1,0 +1,19 @@
+{
+  "name": "vini-ai-kit",
+  "version": "0.1.0",
+  "description": "Personal AI kit for analytics engineering: SQL and dbt conventions, legacy logic to dbt, data quality, Airflow, Python, project bootstrap, code review, portfolio READMEs and branded presentations.",
+  "author": {
+    "name": "Vinicius Valiati"
+  },
+  "license": "MIT",
+  "keywords": [
+    "analytics-engineering",
+    "dbt",
+    "sql",
+    "sqlfluff",
+    "airflow",
+    "data-quality",
+    "code-review",
+    "presentations"
+  ]
+}
